@@ -11,9 +11,9 @@ class Transaction (Base):
     __tablename__ = 'transaction'
     # Here we define columns for the table person
     id = Column(Integer, primary_key=True)
-    address = Column(String(250), nullable=False)
+    address = Column(String(250), unique=True)
     gasLimit = Column(Integer, nullable=False)
-    gasPrice = Column(Integer, nullable=False)
+    gasPrice = Column(Numeric, nullable=False)
     timestamp = Column(Integer, nullable=False)
 
 # Create an engine that stores data in the local directory's
