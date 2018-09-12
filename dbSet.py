@@ -10,12 +10,11 @@ Base = declarative_base()
 class Transaction (Base):
     __tablename__ = 'transaction'
     # Here we define columns for the table person
-    id = Column(Integer, primary_key=True)
-    address = Column(String(250), unique=True)
-    gasLimit = Column(Integer, nullable=False)
-    gasPrice = Column(Numeric, nullable=False)
-    timestamp = Column(Integer, nullable=False)
-
+    id = Column(Integer, primary_key = True)
+    hash = Column(String(250), unique = False)
+    timestamp = Column(Integer, nullable = False)
+    gasLimit = Column(Integer, nullable = True)
+    gasPrice = Column(Numeric, nullable = True)
 # Create an engine that stores data in the local directory's
 # sqlalchemy_example.db file.
 engine = create_engine('sqlite:///tx.db')
