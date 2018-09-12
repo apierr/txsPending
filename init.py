@@ -1,11 +1,9 @@
 
 from dbSet import Base, Transaction
 from dbPush import DbPush
-from fetchTX import FetchTX
 from hash import Hash
 import time
 
-fetchTX = FetchTX()
 dbPush = DbPush('tx.db')
 
 
