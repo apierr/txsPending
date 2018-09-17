@@ -1,0 +1,36 @@
+<head>
+    <!-- Plotly.js -->
+    <script src="./vendors/plotly-latest.min.js"></script>
+    <script src="./vendors/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <script type="text/javascript">
+        $.getJSON( "./json/deltaVsGasLimit.json", function( json ) {
+
+            var data = [ {
+                x: json.delta,
+                // y: json.gasLimit,
+                y: json.gasPrice,
+                mode: 'markers'
+            } ];
+
+            var layout = {
+                title:'Pending time for ethereum blockchain',
+                xaxis: {
+                    title: json.titles.delta,
+                    showline: false
+                },
+                yaxis: {
+                    title: json.titles.gasPrice,
+                    showline: false
+                },
+                xaxis: {range: [0, 1000]}
+            };
+
+            Plotly.newPlot('div1', data, layout);
+        });
+    </script>
+</body>

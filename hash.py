@@ -5,7 +5,6 @@ from htmlParser import HtmlParser
 class Hash:
 
     def __init__(self):
-        txsLength = '20'
         self.url = 'https://www.etherchain.org/'
         self.blockUrl = self.url + 'block/'
 
@@ -28,15 +27,14 @@ class Hash:
         hash = self._getNotConfirmedTx()
         print(hash)
         htmlParser = HtmlParser(hash)
-        soup = htmlParser.getSoup()
-        if len(soup.findAll('table')) == 0:
-            return self._getFakeDataTx(hash)
-        return {
-            'hash': hash,
-            'blockId': htmlParser.getBlockNumber(),
-            'gasPrice': htmlParser.getGasPrice(),
-            'gasLimit': htmlParser.getGasLimit()
-        }
+        if hasattr(htmlParser, 'tableText'):
+            return {
+                'hash': hash,
+                'blockId': htmlParser.getBlockNumber(),
+                'gasPrice': htmlParser.getGasPrice(),
+                'gasLimit': htmlParser.getGasLimit()
+            }
+        return self._getFakeDataTx(hash)
 
     def getPendingTxsHashes(self):
         pendingTxs = []
@@ -44,7 +42,7 @@ class Hash:
         for pendingTx in htmlParser.getPendingTxs():
             hash = self._getHashFromHtml(pendingTx)
             htmlParser = HtmlParser(hash)
-            if htmlParser.isTable:
-                if htmlParser.isPendingTx():
-                    pendingTxs.append([hash, htmlParser.getTimestamp()])
+            print(hash)
+            if hasattr(htmlParser, 'tableText'):
+                pendingTxs.append([hash, htmlParser.getTimestamp()])
         return pendingTxs

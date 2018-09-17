@@ -8,6 +8,7 @@ class Query:
         engine = create_engine('sqlite:///tx.db')
         self.Session = sessionmaker(bind=engine)
 
+    ## To update the DB
     def getNotConfirmedTx(self):
         session = self.Session()
         for instance in session.query(Transaction)\
@@ -43,3 +44,21 @@ class Query:
         session = self.Session()
         session.add(block)
         session.commit()
+
+    ### Analysis
+    def getDeltaTime(self):
+        session = self.Session()
+        sql = '''
+            select
+                --- 'transaction'.hash, 'block'.id,
+                'block'.timestamp  - 'transaction'.timestamp + 'block'.minedIn as delta,
+                gasLimit * gasPrice, gasPrice
+            from
+                'transaction', 'block'
+            where
+                'block'.id = 'transaction'.blockId and
+                'block'.minedIn != 0 and
+                delta > 0
+            order by delta
+        '''
+        return session.execute(sql)

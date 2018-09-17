@@ -5,10 +5,12 @@ from hash import Hash
 import time
 from query import Query
 from htmlParser import HtmlParser
+from writeJson import WriteJson
 
 dbPush = DbPush('tx.db')
 query = Query()
 hash = Hash()
+writeJson = WriteJson()
 
 def _getPendingTxsHashes():
     hash = Hash()
@@ -27,7 +29,7 @@ def getPendingTxsHashes():
         time.sleep(10)
 
 def updateTxWithBlockId():
-    for i in range (0, 50):
+    for i in range (0, 250):
         txData = hash.getTxsData()
         print(txData)
         query.updateTxWithBlockId(txData)
@@ -44,6 +46,7 @@ def updateBlockTable():
             minedIn = blockInfo['minedIn']
         ))
 
-#getPendingTxsHashes()
+#_getPendingTxsHashes()
 #updateTxWithBlockId()
-updateBlockTable()
+#updateBlockTable()
+writeJson.setDelta()
