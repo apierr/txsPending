@@ -1,0 +1,91 @@
+<head>
+    <!-- Plotly.js -->
+    <script src="./vendors/plotly-latest.min.js"></script>
+    <script src="./vendors/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+    <div id="div1"></div>
+    <div id="div2"></div>
+    <script type="text/javascript">
+        $.getJSON( "./json/deltaVsGasLimit.json", function( json ) {
+                console.log(json)
+
+            var getLogs = function(rows) {
+                return rows.map(function(row) {
+                    return Math.log(row);
+                });
+            }
+
+            var data = [{
+                x: json['gasPrice'],
+                y: json['gasLimit'],
+                z: getLogs(json['delta']),
+                mode: 'markers',
+                type: 'mesh3d', // scatter3d, surface
+                marker: {
+                  color: 'rgb(23, 190, 207)',
+                  size: 2
+                }
+            },
+            // {
+            //     alphahull: 7,
+            //     opacity: 0.1,
+            //     type: 'mesh3d',
+            //     x: json['gasPrice'],
+            //     y: json['gasLimit'],
+            //     z: json['delta']
+            // }
+        ];
+            var layout = {
+                autosize: true,
+                height: 680,
+                scene: {
+                    aspectratio: {
+                        x: 1,
+                        y: 1,
+                        z: 1
+                    },
+                    camera: {
+                        center: {
+                            x: 0,
+                            y: 0,
+                            z: 0
+                        },
+                        eye: {
+                            x: 1.25,
+                            y: 1.25,
+                            z: 1.25
+                        },
+                        up: {
+                            x: 0,
+                            y: 0,
+                            z: 1
+                        }
+                    },
+                    xaxis: {
+                        title: json.titles.gasPrice,
+                        type: 'linear',
+                        zeroline: false
+                    },
+                    yaxis: {
+                        title: json.titles.gasLimit,
+                        type: 'linear',
+                        zeroline: false
+                    },
+                    zaxis: {
+                        title: json.titles.delta,
+                        type: 'linear',
+                        zeroline: false
+                    }
+                },
+                title: '3d point clustering',
+                width: 777
+            };
+            console.log(data)
+
+            Plotly.newPlot('div1', data, layout);
+
+        });
+    </script>
+</body>
